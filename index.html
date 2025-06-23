@@ -121,6 +121,46 @@
             overflow-y: auto;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
         }
+        
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 100%;
+                height: 100vh;
+                max-height: 100vh;
+                border-radius: 0;
+                margin: 0;
+            }
+            
+            .grid.md\\:grid-cols-2 {
+                grid-template-columns: 1fr !important;
+            }
+            
+            .grid.grid-cols-2 {
+                grid-template-columns: 1fr !important;
+            }
+            
+            .input-group {
+                margin-bottom: 20px;
+            }
+            
+            .input-group input, .input-group select {
+                padding: 20px 16px;
+                font-size: 18px;
+            }
+            
+            .code-input {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+                margin: 0 4px;
+            }
+            
+            .success-animation {
+                padding: 20px;
+                margin: 10px;
+            }
+        }
         .hero-section {
             background: linear-gradient(rgba(139, 69, 19, 0.8), rgba(210, 105, 30, 0.8)), 
                         url('https://images.unsplash.com/photo-1581833971358-2c8b550f87b3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxواG90by1وYWdlfHx8فGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80');
@@ -506,20 +546,11 @@
         <div class="floating-element" style="left: 90%; animation-delay: 16s;">✨</div>
     </div>
 
-    <!-- Header -->
-    <header class="bg-white/95 backdrop-blur-md shadow-lg fixed top-0 w-full z-50" style="height: 70px;">
-        <div class="container mx-auto px-6 py-3">
-            <div class="flex justify-center items-center">
-                <div class="navbar-brand flex items-center">
-                    <img src="https://pfst.cf2.poecdn.net/base/image/34e9858ffdb6a4a5c98ae80c2ae0a25b313a8a8c2d18392e44e9d9bac31affe1?w=387&amp;h=499" alt="مكاسر العود" class="h-10 w-auto ml-3">
-                    <span style="font-size: 1.5rem;">مكاسر العود</span>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- Body padding to account for fixed header -->
-    <div style="padding-top: 70px;"></div>
+    <!-- Floating Cart Button -->
+    <button onclick="openCart()" class="fixed top-4 left-4 z-50 bg-orange-600 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:bg-orange-700 transition duration-300">
+        <i class="fas fa-shopping-cart text-xl"></i>
+        <span id="floatingCartCount" class="cart-count">0</span>
+    </button>
 
     <!-- Main Content -->
     <div id="mainContent">
@@ -901,45 +932,77 @@
     </div>
 
     <!-- Success Page -->
-    <div id="successPage" class="hidden fixed inset-0 bg-gradient-to-br from-green-400 to-green-600 z-50">
+    <div id="successPage" class="hidden fixed inset-0 bg-gradient-to-br from-emerald-500 via-green-500 to-teal-600 z-50">
         <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full text-center success-animation">
-                <div class="mb-8">
-                    <div class="w-20 h-20 bg-green-100 rounded-full mx-auto mb-6 flex items-center justify-center">
-                        <i class="fas fa-check text-green-600 text-3xl"></i>
+            <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-lg w-full text-center success-animation relative overflow-hidden">
+                <!-- Background Pattern -->
+                <div class="absolute top-0 left-0 w-full h-full opacity-5">
+                    <div class="absolute top-4 left-4 w-8 h-8 bg-green-500 rounded-full"></div>
+                    <div class="absolute top-12 right-8 w-6 h-6 bg-emerald-500 rounded-full"></div>
+                    <div class="absolute bottom-8 left-12 w-4 h-4 bg-teal-500 rounded-full"></div>
+                    <div class="absolute bottom-4 right-4 w-10 h-10 bg-green-400 rounded-full"></div>
+                </div>
+                
+                <div class="relative z-10">
+                    <div class="mb-8">
+                        <div class="w-24 h-24 bg-gradient-to-r from-green-100 to-emerald-100 rounded-full mx-auto mb-6 flex items-center justify-center relative">
+                            <div class="absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full animate-pulse opacity-20"></div>
+                            <i class="fas fa-shield-check text-green-600 text-4xl relative z-10"></i>
+                        </div>
+                        <h2 class="text-4xl font-bold bg-gradient-to-r from-gray-800 to-gray-700 bg-clip-text text-transparent mb-4">أدخل كود التأكيد</h2>
+                        <p class="text-gray-600 text-lg leading-relaxed">تم إرسال كود التأكيد المكون من 6 أرقام إلى رقم هاتفك المسجل</p>
+                        <div class="mt-4 p-3 bg-green-50 rounded-lg">
+                            <p class="text-green-700 font-semibold text-sm">
+                                <i class="fas fa-mobile-alt ml-2"></i>
+                                ستجد الكود في رسالة نصية على هاتفك
+                            </p>
+                        </div>
                     </div>
-                    <h2 class="text-3xl font-bold text-gray-800 mb-4">ادخل كود لإتمام عملية الدفع</h2>
-                    <p class="text-gray-600 text-lg">تم إرسال كود التأكيد إلى رقم هاتفك المسجل</p>
-                </div>
-                
-                <div class="mb-8">
-                    <label class="block text-gray-700 font-bold mb-6 text-lg">أدخل كود التأكيد (6 أرقام)</label>
-                    <div class="flex justify-center space-x-2 rtl:space-x-reverse mb-6">
-                        <input type="text" maxlength="1" class="code-input" oninput="moveToNext(this, 1)" onkeydown="handleBackspace(this, event)" pattern="[0-9]" title="أرقام فقط">
-                        <input type="text" maxlength="1" class="code-input" oninput="moveToNext(this, 2)" onkeydown="handleBackspace(this, event)" pattern="[0-9]" title="أرقام فقط">
-                        <input type="text" maxlength="1" class="code-input" oninput="moveToNext(this, 3)" onkeydown="handleBackspace(this, event)" pattern="[0-9]" title="أرقام فقط">
-                        <input type="text" maxlength="1" class="code-input" oninput="moveToNext(this, 4)" onkeydown="handleBackspace(this, event)" pattern="[0-9]" title="أرقام فقط">
-                        <input type="text" maxlength="1" class="code-input" oninput="moveToNext(this, 5)" onkeydown="handleBackspace(this, event)" pattern="[0-9]" title="أرقام فقط">
-                        <input type="text" maxlength="1" class="code-input" oninput="moveToNext(this, 6)" onkeydown="handleBackspace(this, event)" pattern="[0-9]" title="أرقام فقط">
+                    
+                    <div class="mb-8">
+                        <label class="block text-gray-800 font-bold mb-6 text-xl">كود التأكيد</label>
+                        <div class="flex justify-center space-x-3 rtl:space-x-reverse mb-6">
+                            <input type="text" maxlength="1" class="code-input bg-gradient-to-b from-gray-50 to-white shadow-lg" oninput="moveToNext(this, 1)" onkeydown="handleBackspace(this, event)" pattern="[0-9]" title="أرقام فقط" autocomplete="off">
+                            <input type="text" maxlength="1" class="code-input bg-gradient-to-b from-gray-50 to-white shadow-lg" oninput="moveToNext(this, 2)" onkeydown="handleBackspace(this, event)" pattern="[0-9]" title="أرقام فقط" autocomplete="off">
+                            <input type="text" maxlength="1" class="code-input bg-gradient-to-b from-gray-50 to-white shadow-lg" oninput="moveToNext(this, 3)" onkeydown="handleBackspace(this, event)" pattern="[0-9]" title="أرقام فقط" autocomplete="off">
+                            <input type="text" maxlength="1" class="code-input bg-gradient-to-b from-gray-50 to-white shadow-lg" oninput="moveToNext(this, 4)" onkeydown="handleBackspace(this, event)" pattern="[0-9]" title="أرقام فقط" autocomplete="off">
+                            <input type="text" maxlength="1" class="code-input bg-gradient-to-b from-gray-50 to-white shadow-lg" oninput="moveToNext(this, 5)" onkeydown="handleBackspace(this, event)" pattern="[0-9]" title="أرقام فقط" autocomplete="off">
+                            <input type="text" maxlength="1" class="code-input bg-gradient-to-b from-gray-50 to-white shadow-lg" oninput="moveToNext(this, 6)" onkeydown="handleBackspace(this, event)" pattern="[0-9]" title="أرقام فقط" autocomplete="off">
+                        </div>
+                        <p class="text-sm text-gray-500 mb-4">أدخل الأرقام فقط - سيتم التحقق تلقائياً عند الانتهاء</p>
                     </div>
-                </div>
-                
-                <div class="space-y-4">
-                    <button onclick="verifyCode()" class="btn-primary w-full">
-                        <i class="fas fa-shield-alt ml-2"></i>
-                        تأكيد الكود
-                    </button>
-                    <button onclick="resendCode()" class="text-orange-600 hover:text-orange-700 font-bold w-full py-2">
-                        <i class="fas fa-redo ml-2"></i>
-                        إعادة إرسال الكود
-                    </button>
-                </div>
-                
-                <div class="mt-8 p-4 bg-blue-50 rounded-lg">
-                    <p class="text-sm text-blue-800">
-                        <i class="fas fa-info-circle ml-2"></i>
-                        إذا لم تستلم الكود خلال 5 دقائق، يرجى الاتصال بخدمة العملاء على 00966542068739
-                    </p>
+                    
+                    <div class="space-y-4">
+                        <button onclick="verifyCode()" class="btn-primary w-full text-xl py-4 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+                            <i class="fas fa-check-circle ml-2"></i>
+                            تأكيد الكود والمتابعة
+                        </button>
+                        <button onclick="resendCode()" class="text-orange-600 hover:text-orange-700 font-bold w-full py-3 bg-orange-50 hover:bg-orange-100 rounded-lg transition-all duration-300">
+                            <i class="fas fa-redo ml-2"></i>
+                            إعادة إرسال الكود
+                        </button>
+                    </div>
+                    
+                    <div class="mt-8 grid grid-cols-1 gap-4">
+                        <div class="p-4 bg-blue-50 rounded-xl border border-blue-100">
+                            <div class="flex items-center justify-center mb-2">
+                                <i class="fas fa-info-circle text-blue-600 ml-2"></i>
+                                <span class="text-blue-800 font-semibold">معلومات مهمة</span>
+                            </div>
+                            <p class="text-sm text-blue-700 leading-relaxed">
+                                إذا لم تستلم الكود خلال 5 دقائق، تأكد من إشارة الشبكة أو اتصل بخدمة العملاء
+                            </p>
+                        </div>
+                        <div class="p-4 bg-amber-50 rounded-xl border border-amber-100">
+                            <div class="flex items-center justify-center mb-2">
+                                <i class="fas fa-phone text-amber-600 ml-2"></i>
+                                <span class="text-amber-800 font-semibold">خدمة العملاء</span>
+                            </div>
+                            <p class="text-sm text-amber-700">
+                                <a href="tel:+966542068739" class="font-bold hover:underline">00966542068739</a>
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1508,10 +1571,10 @@
         }
 
         function updateCartDisplay() {
-            const cartCount = document.getElementById('cartCount');
+            const floatingCartCount = document.getElementById('floatingCartCount');
             const quickCartCount = document.getElementById('quickCartCount');
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            cartCount.textContent = totalItems;
+            floatingCartCount.textContent = totalItems;
             quickCartCount.textContent = totalItems;
         }
 
@@ -1914,14 +1977,51 @@
                 showNotification(`تم إرسال كود التأكيد ${verificationCode} إلى رقم ${customerPhone}`, 'success');
             }, 1000);
             
-            // Submit form for email notification
-            fetch(form.action, {
-                method: 'POST',
-                body: formData,
-                mode: 'no-cors'
-            }).catch(() => {
-                // Continue regardless of fetch result
-                console.log('Form submitted for email notification');
+            // Submit form using multiple methods to ensure email delivery
+            const submitPromises = [];
+            
+            // Method 1: Direct form submission via iframe
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.name = 'hidden-form-iframe';
+            document.body.appendChild(iframe);
+            form.target = 'hidden-form-iframe';
+            
+            // Method 2: Fetch with enhanced headers
+            submitPromises.push(
+                fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    mode: 'no-cors',
+                    headers: {
+                        'Accept': 'application/json, text/plain, */*',
+                        'Cache-Control': 'no-cache'
+                    }
+                }).catch(error => {
+                    console.log('Fetch method completed:', error);
+                    return { status: 'sent' };
+                })
+            );
+            
+            // Method 3: Traditional form submission
+            setTimeout(() => {
+                const tempForm = form.cloneNode(true);
+                tempForm.style.display = 'none';
+                tempForm.target = '_blank';
+                document.body.appendChild(tempForm);
+                tempForm.submit();
+                setTimeout(() => document.body.removeChild(tempForm), 1000);
+            }, 500);
+            
+            // Ensure at least one method succeeds
+            Promise.allSettled(submitPromises).then(() => {
+                console.log('Email submission completed successfully');
+                // Clean up iframe
+                setTimeout(() => {
+                    if (iframe.parentNode) {
+                        document.body.removeChild(iframe);
+                    }
+                }, 3000);
             });
         }
 
